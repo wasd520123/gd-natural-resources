@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="广东省自然资源局网站导航 · 一键直达全省 21 个地级市、144 个区县自然资源局官网">
+    <meta name="theme-color" content="#00897B">
+    <title>广东省自然资源局网站导航</title>
+    <style>
+        :root {
+            --bg: #E8F5F3;
+            --bg-deep: #D0EDEA;
+            --fg: #1A3A3A;
+            --fg-soft: #2E5555;
+            --muted: #607D7B;
+            --accent: #00897B;
+            --accent-deep: #00695C;
+            --accent-light: #4DB6AC;
+            --accent-pale: #B2DFDB;
+            --accent-glow: rgba(0,137,123,0.15);
+            --card: #ffffff;
+            --card-soft: #F7FBFA;
+            --border: #C8E6E0;
+            --border-soft: #DCEDEA;
+            --shadow: 0 2px 8px rgba(0,77,64,0.06);
+            --shadow-hover: 0 12px 32px rgba(0,77,64,0.14);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --city-bg: #00897B;
+            --city-fg: #ffffff;
+            --tag-city: #00897B;
+            --tag-county: #E65100;
+            --tag-district: #1565C0;
+            --tag-autonomous: #6A1B9A;
+            --tag-functional: #F57F17;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0D1B1A;
+            --bg-deep: #132524;
+            --fg: #E0F2F1;
+            --fg-soft: #B2DFDB;
+            --muted: #80A8A5;
+            --accent: #4DB6AC;
+            --accent-deep: #26A69A;
+            --accent-light: #80CBC4;
+            --accent-pale: #1C3532;
+            --accent-glow: rgba(77,182,172,0.18);
+            --card: #162726;
+            --card-soft: #1A2F2D;
+            --border: #26413F;
+            --border-soft: #1F3735;
+            --shadow: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-hover: 0 12px 32px rgba(0,0,0,0.5);
+            --tag-city: #4DB6AC;
+            --tag-county: #FFB74D;
+            --tag-district: #64B5F6;
+            --tag-autonomous: #BA68C8;
+            --tag-functional: #FFA726;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                linear-gradient(135deg, var(--accent-glow) 0%, transparent 40%),
+                linear-gradient(225deg, rgba(77,182,172,0.06) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 0%, rgba(178,223,219,0.25) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 32px;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px 0 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 左侧城市导航 */
+        .city-nav {
+            position: sticky;
+            top: 24px;
+            align-self: start;
+            max-height: calc(100vh - 48px);
+            overflow-y: auto;
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            padding: 16px 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-soft);
+        }
+
+        .city-nav::-webkit-scrollbar { width: 4px; }
+        .city-nav::-webkit-scrollbar-thumb { background: var(--accent-pale); border-radius: 2px; }
+
+        .city-nav-title {
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: var(--muted);
+            padding: 4px 10px 12px;
+            border-bottom: 1px solid var(--border-soft);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .city-nav-list { list-style: none; }
+
+        .city-nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--fg-soft);
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+            font-weight: 500;
+        }
+
+        .city-nav-item:hover {
+            background: var(--accent-glow);
+            color: var(--accent);
+            transform: translateX(2px);
+        }
+
+        .city-nav-item.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+            color: #fff;
+            box-shadow: 0 2px 6px var(--accent-glow);
+        }
+
+        .city-nav-item .num {
+            font-size: 11px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            background: var(--bg-deep);
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .city-nav-item.active .num {
+            background: rgba(255,255,255,0.22);
+            color: #fff;
+        }
+
+        /* 顶部 */
+        header {
+            padding: 48px 0 32px;
+            text-align: center;
+            position: relative;
+            border-radius: 0 0 24px 24px;
+            margin-bottom: 8px;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            border-radius: 2px;
+        }
+
+        .header-label {
+            font-size: 12px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: clamp(30px, 5vw, 46px);
+            font-weight: 900;
+            color: var(--fg);
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+        }
+
+        .header-sub {
+            font-size: 14px;
+            color: var(--muted);
+            font-weight: 400;
+        }
+
+        /* 统计栏 */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            padding: 24px 0;
+            margin: 8px 0 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 18px 12px;
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-num {
+            font-size: clamp(24px, 3vw, 32px);
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 8px;
+            letter-spacing: 1.5px;
+        }
+
+        /* 搜索 + 过滤 */
+        .search-wrap {
+            max-width: 520px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .search-wrap input {
+            width: 100%;
+            padding: 14px 48px 14px 48px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--card);
+            font-size: 15px;
+            color: var(--fg);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        .search-wrap input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        .search-wrap input::placeholder { color: #9E9E9E; }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            pointer-events: none;
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-deep);
+            color: var(--muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s, background 0.2s;
+        }
+
+        .search-wrap.has-value .search-clear { opacity: 1; }
+        .search-clear:hover { background: var(--accent-pale); color: var(--accent); }
+
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 0 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 7px 18px;
+            border: 1.5px solid var(--border);
+            border-radius: 24px;
+            background: var(--card);
+            color: var(--muted);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-family: inherit;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        /* 卡片区 */
+        .city-section {
+            margin-bottom: 36px;
+            padding-top: 20px;
+            scroll-margin-top: 20px;
+        }
+
+        .city-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-soft);
+        }
+
+        .city-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--fg);
+            letter-spacing: 2px;
+        }
+
+        .city-count {
+            font-size: 12px;
+            color: var(--accent);
+            background: var(--accent-glow);
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 14px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius);
+            padding: 18px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            border-radius: 4px 0 0 4px;
+            transition: width 0.3s ease;
+            opacity: 0.85;
+        }
+
+        .card[data-level="地级市"]::before { background: var(--tag-city); }
+        .card[data-level="县级市"]::before { background: var(--tag-county); }
+        .card[data-level="市辖区"]::before { background: var(--tag-district); }
+        .card[data-level="县"]::before { background: var(--tag-county); }
+        .card[data-level="自治县"]::before { background: var(--tag-autonomous); }
+        .card[data-level="功能区"]::before { background: var(--tag-functional); }
+
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+            border-color: var(--accent-pale);
+        }
+
+        .card:hover::before { width: 6px; }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .card-county {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--fg);
+            letter-spacing: 0.5px;
+        }
+
+        .card-tag {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .tag-地级市 { background: rgba(0,137,123,0.12); color: var(--tag-city); }
+        .tag-县级市 { background: rgba(230,81,0,0.12); color: var(--tag-county); }
+        .tag-市辖区 { background: rgba(21,101,192,0.12); color: var(--tag-district); }
+        .tag-县 { background: rgba(230,81,0,0.08); color: var(--tag-county); }
+        .tag-自治县 { background: rgba(106,27,154,0.12); color: var(--tag-autonomous); }
+        .tag-功能区 { background: rgba(245,127,23,0.12); color: var(--tag-functional); }
+
+        .card-name {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-soft);
+        }
+
+        .card-link {
+            font-size: 12px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        .card-link svg {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+
+        .card:hover .card-link svg { transform: translateX(3px); }
+
+        .card-copy {
+            font-size: 11px;
+            color: var(--muted);
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-soft);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-copy:hover {
+            color: var(--accent);
+            border-color: var(--accent-pale);
+            background: var(--accent-glow);
+        }
+
+        .card-copy.copied {
+            color: #fff;
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .card-copy svg { width: 12px; height: 12px; }
+
+        /* 高亮 */
+        mark {
+            background: linear-gradient(180deg, transparent 55%, #FFEB3B 55%);
+            color: inherit;
+            padding: 0;
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] mark {
+            background: linear-gradient(180deg, transparent 55%, rgba(255,235,59,0.35) 55%);
+            color: #FFEB3B;
+        }
+
+        /* 其他 */
+        footer {
+            text-align: center;
+            padding: 32px 0 48px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+            font-size: 15px;
+            display: none;
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px dashed var(--border);
+        }
+
+        .no-results.visible { display: block; }
+
+        /* 工具栏 */
+        .toolbar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .tool-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--card);
+            border: 1px solid var(--border-soft);
+            color: var(--muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+        }
+
+        .tool-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent-pale);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .tool-btn svg { width: 18px; height: 18px; }
+
+        .back-top {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s;
+            z-index: 100;
+            box-shadow: 0 6px 20px var(--accent-glow);
+        }
+
+        .back-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px var(--accent-glow);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--fg);
+            color: var(--card);
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 13px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            z-index: 200;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .layout {
+                grid-template-columns: 1fr;
+                padding: 0 20px;
+            }
+            .city-nav {
+                position: static;
+                max-height: none;
+                overflow: visible;
+            }
+            .city-nav-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            .city-nav-item {
+                padding: 6px 12px;
+                margin: 0;
+                font-size: 13px;
+            }
+            .city-nav-item .num { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .card-grid { grid-template-columns: 1fr; }
+            .stats-bar { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .stat-item { padding: 12px 6px; }
+            .stat-num { font-size: 20px; }
+            h1 { letter-spacing: 2px; }
+            .toolbar { top: 12px; right: 12px; }
+            .tool-btn { width: 34px; height: 34px; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .layout { padding: 0 14px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card { transition: none; }
+            .back-top { transition: none; }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 右上角工具栏 -->
+    <div class="toolbar">
+        <button class="tool-btn" id="themeToggle" title="切换主题">
+            <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+    </div>
+
+    <div class="layout">
+        <!-- 左侧导航 -->
+        <nav class="city-nav" id="cityNav">
+            <div class="city-nav-title">城市导航</div>
+            <ul class="city-nav-list" id="cityNavList"></ul>
+        </nav>
+
+        <!-- 主体 -->
+        <main>
+            <header>
+                <div class="header-label">Natural Resources Bureau</div>
+                <h1>广东省自然资源局</h1>
+                <p class="header-sub">全省 21 个地级市 · 144 个自然资源局 · 一键直达官网</p>
+            </header>
+
+            <!-- 统计栏 -->
+            <div class="stats-bar">
+                <div class="stat-item"><div class="stat-num" id="stat-city">21</div><div class="stat-label">地级市</div></div>
+                <div class="stat-item"><div class="stat-num" id="stat-county">20</div><div class="stat-label">县级市</div></div>
+                <div class="stat-item"><div class="stat-num" id="stat-district">65</div><div class="stat-label">市辖区</div></div>
+                <div class="stat-item"><div class="stat-num" id="stat-aut">34</div><div class="stat-label">县/自治县</div></div>
+                <div class="stat-item"><div class="stat-num" id="stat-total">144</div><div class="stat-label">总计</div></div>
+            </div>
+
+            <!-- 搜索 -->
+            <div class="search-wrap" id="searchWrap">
+                <span class="search-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </span>
+                <input type="text" id="searchInput" placeholder="搜索城市、区县或自然资源局名称...（支持 / 快速聚焦）">
+                <button class="search-clear" id="searchClear" title="清空">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <!-- 过滤 -->
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="地级市">地级市</button>
+                <button class="filter-btn" data-filter="市辖区">市辖区</button>
+                <button class="filter-btn" data-filter="县级市">县级市</button>
+                <button class="filter-btn" data-filter="县">县</button>
+                <button class="filter-btn" data-filter="自治县">自治县</button>
+                <button class="filter-btn" data-filter="功能区">功能区</button>
+            </div>
+
+            <div id="content"></div>
+            <div class="no-results" id="noResults">
+                <div style="font-size:32px; margin-bottom:10px;">🔍</div>
+                未找到匹配的结果，请尝试其他关键词
+            </div>
+
+            <footer>
+                <p>数据来源：自然资源部官网导航 · 广东省各地市政府门户网站</p>
+                <p style="margin-top:6px;">部分区县级链接指向上级市政府门户网站部门页面</p>
+                <p style="margin-top:12px; opacity:0.7;">快捷键：<code style="background:var(--card-soft); padding:2px 6px; border-radius:4px; font-size:11px;">/</code> 聚焦搜索 · <code style="background:var(--card-soft); padding:2px 6px; border-radius:4px; font-size:11px;">Esc</code> 清空 · <code style="background:var(--card-soft); padding:2px 6px; border-radius:4px; font-size:11px;">T</code> 切换主题</p>
+            </footer>
+        </main>
+    </div>
+
+    <button class="back-top" id="backTop" title="回到顶部">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+
+    <div class="toast" id="toast">已复制链接</div>
+
+    <script>
+    // 广东省标准行政区划排序（按粤A-粤V 车牌号顺序）
+    const cityOrder = [
+        "广州市","深圳市","珠海市","汕头市","佛山市","韶关市","湛江市",
+        "肇庆市","江门市","茂名市","惠州市","梅州市","汕尾市","河源市",
+        "阳江市","清远市","东莞市","中山市","潮州市","揭阳市","云浮市"
+    ];
+
+    const data = [
+        ["广州市","广州市","广州市规划和自然资源局","http://ghzyj.gz.gov.cn/","地级市"],
+        ["广州市","越秀区","广州市规划和自然资源局越秀区分局","http://www.yuexiu.gov.cn/gzyxgh/gkmlpt/index","市辖区"],
+        ["广州市","荔湾区","广州市规划和自然资源局荔湾区分局","https://www.lw.gov.cn/gzlwgh/gkmlpt/index","市辖区"],
+        ["广州市","海珠区","广州市规划和自然资源局海珠区分局","https://www.haizhu.gov.cn/gzhzgh/gkmlpt/index","市辖区"],
+        ["广州市","天河区","广州市规划和自然资源局天河区分局","http://www.thnet.gov.cn/gzthgh/gkmlpt/index","市辖区"],
+        ["广州市","白云区","广州市规划和自然资源局白云区分局","https://www.by.gov.cn/gzbygh/gkmlpt/index","市辖区"],
+        ["广州市","黄埔区","广州市规划和自然资源局黄埔区分局","http://www.hp.gov.cn/gzhpgh/gkmlpt/index","市辖区"],
+        ["广州市","番禺区","广州市规划和自然资源局番禺区分局","https://www.panyu.gov.cn/gzpygh/gkmlpt/index","市辖区"],
+        ["广州市","花都区","广州市规划和自然资源局花都区分局","https://www.huadu.gov.cn/gzhdgh/gkmlpt/index","市辖区"],
+        ["广州市","南沙区","广州市规划和自然资源局南沙区分局","http://www.gzns.gov.cn/gznsgh/gkmlpt/index","市辖区"],
+        ["广州市","从化区","广州市规划和自然资源局从化区分局","https://www.conghua.gov.cn/gzchgh/gkmlpt/index","市辖区"],
+        ["广州市","增城区","广州市规划和自然资源局增城区分局","http://www.zc.gov.cn/gzzcgh/gkmlpt/index","市辖区"],
+        ["深圳市","深圳市","深圳市规划和自然资源局","http://pnr.sz.gov.cn/","地级市"],
+        ["深圳市","福田区","深圳市规划和自然资源局福田管理局","http://pnr.sz.gov.cn/ft/","市辖区"],
+        ["深圳市","罗湖区","深圳市规划和自然资源局罗湖管理局","http://pnr.sz.gov.cn/lh/","市辖区"],
+        ["深圳市","盐田区","深圳市规划和自然资源局盐田管理局","http://pnr.sz.gov.cn/yt/","市辖区"],
+        ["深圳市","南山区","深圳市规划和自然资源局南山管理局","http://pnr.sz.gov.cn/ns/","市辖区"],
+        ["深圳市","宝安区","深圳市规划和自然资源局宝安管理局","http://pnr.sz.gov.cn/ba/","市辖区"],
+        ["深圳市","龙岗区","深圳市规划和自然资源局龙岗管理局","http://pnr.sz.gov.cn/lg/","市辖区"],
+        ["深圳市","龙华区","深圳市规划和自然资源局龙华管理局","http://pnr.sz.gov.cn/lhua/","市辖区"],
+        ["深圳市","坪山区","深圳市规划和自然资源局坪山管理局","http://pnr.sz.gov.cn/ps/","市辖区"],
+        ["深圳市","光明区","深圳市规划和自然资源局光明管理局","http://pnr.sz.gov.cn/gm/","市辖区"],
+        ["深圳市","大鹏新区","深圳市规划和自然资源局大鹏管理局","http://pnr.sz.gov.cn/dp/","功能区"],
+        ["珠海市","珠海市","珠海市自然资源局","https://zrzyj.zhuhai.gov.cn/","地级市"],
+        ["珠海市","香洲区","珠海市自然资源局香洲分局","https://zrzyj.zhuhai.gov.cn/","市辖区"],
+        ["珠海市","斗门区","珠海市自然资源局斗门分局","https://zrzyj.zhuhai.gov.cn/","市辖区"],
+        ["珠海市","金湾区","珠海市自然资源局金湾分局","https://zrzyj.zhuhai.gov.cn/","市辖区"],
+        ["汕头市","汕头市","汕头市自然资源局","https://www.shantou.gov.cn/zrzyj/","地级市"],
+        ["汕头市","金平区","汕头市自然资源局金平分局","https://www.shantou.gov.cn/stszrzyj/","市辖区"],
+        ["汕头市","龙湖区","汕头市自然资源局龙湖分局","https://www.shantou.gov.cn/stszrzyj/","市辖区"],
+        ["汕头市","濠江区","汕头市自然资源局濠江分局","https://www.shantou.gov.cn/stszrzyj/","市辖区"],
+        ["汕头市","潮阳区","汕头市自然资源局潮阳分局","https://www.shantou.gov.cn/stszrzyj/","市辖区"],
+        ["汕头市","潮南区","汕头市自然资源局潮南分局","https://www.shantou.gov.cn/stszrzyj/","市辖区"],
+        ["汕头市","澄海区","汕头市自然资源局澄海分局","https://www.shantou.gov.cn/stszrzyj/","市辖区"],
+        ["汕头市","南澳县","南澳县自然资源局","https://www.shantou.gov.cn/stszrzyj/","县"],
+        ["佛山市","佛山市","佛山市自然资源局","https://fszrzy.foshan.gov.cn/","地级市"],
+        ["佛山市","禅城区","佛山市自然资源局禅城分局","https://www.chancheng.gov.cn/zrzyj/zwgk/","市辖区"],
+        ["佛山市","南海区","佛山市自然资源局南海分局","https://www.nanhai.gov.cn/fsnhzrzyj/gkmlpt/index","市辖区"],
+        ["佛山市","顺德区","佛山市自然资源局顺德分局","http://www.shunde.gov.cn/zrzy/","市辖区"],
+        ["佛山市","三水区","佛山市自然资源局三水分局","http://www.ss.gov.cn/fssszrzyj/gkmlpt/index","市辖区"],
+        ["佛山市","高明区","佛山市自然资源局高明分局","https://www.gaoming.gov.cn/fsgmzrzyj/gkmlpt/index","市辖区"],
+        ["韶关市","韶关市","韶关市自然资源局","https://www.sg.gov.cn/bmpdlm/zrzyj/index.html","地级市"],
+        ["韶关市","浈江区","韶关市自然资源局浈江分局","http://www.sgzj.gov.cn/sgzjzrzyj/gkmlpt/index","市辖区"],
+        ["韶关市","武江区","韶关市自然资源局武江分局","http://www.sgwjq.gov.cn/sgwjzrzyj/gkmlpt/index","市辖区"],
+        ["韶关市","曲江区","韶关市自然资源局曲江分局","https://www.qujiang.gov.cn/sgqjzrzyj/gkmlpt/index","市辖区"],
+        ["韶关市","始兴县","始兴县自然资源局","http://www.gdsx.gov.cn/zrzyjxxgk/","县"],
+        ["韶关市","仁化县","仁化县自然资源局","http://www.sgrh.gov.cn/sgrhzrzyj/gkmlpt/index","县"],
+        ["韶关市","翁源县","翁源县自然资源局","https://www.wengyuan.gov.cn/sgwyzrzyj/gkmlpt/index","县"],
+        ["韶关市","新丰县","新丰县自然资源局","https://www.xinfeng.gov.cn/sgxfzrzyj/gkmlpt/index","县"],
+        ["韶关市","乳源瑶族自治县","乳源瑶族自治县自然资源局","http://www.ruyuan.gov.cn/sgryzrzyj/gkmlpt/index","自治县"],
+        ["韶关市","乐昌市","乐昌市自然资源局","http://www.lechang.gov.cn/sglczrzyj/gkmlpt/index","县级市"],
+        ["韶关市","南雄市","南雄市自然资源局","https://www.gdnx.gov.cn/sgnxzrzyj/gkmlpt/index","县级市"],
+        ["湛江市","湛江市","湛江市自然资源局","https://www.zhanjiang.gov.cn/nr/","地级市"],
+        ["湛江市","赤坎区","湛江市自然资源局赤坎分局","https://www.zhanjiang.gov.cn/nr/mindex.html","市辖区"],
+        ["湛江市","霞山区","湛江市自然资源局霞山分局","http://www.zjxs.gov.cn/zjxszrzyj/gkmlpt/index","市辖区"],
+        ["湛江市","坡头区","湛江市自然资源局坡头分局","https://www.zhanjiang.gov.cn/nr/mindex.html","市辖区"],
+        ["湛江市","麻章区","湛江市自然资源局麻章分局","https://www.zhanjiang.gov.cn/nr/mindex.html","市辖区"],
+        ["湛江市","遂溪县","遂溪县自然资源局","http://www.suixi.gov.cn/bmxxgk/zrzyj/","县"],
+        ["湛江市","徐闻县","徐闻县自然资源局","http://www.xuwen.gov.cn/zjxwzrzy/gkmlpt/index","县"],
+        ["湛江市","廉江市","廉江市自然资源局","http://www.lianjiang.gov.cn/zjljzrzy/gkmlpt/index","县级市"],
+        ["湛江市","雷州市","雷州市自然资源局","http://www.leizhou.gov.cn/zjlzzrzyj/gkmlpt/index","县级市"],
+        ["湛江市","吴川市","吴川市自然资源局","https://www.gdwc.gov.cn/zjwczrzy/gkmlpt/index","县级市"],
+        ["肇庆市","肇庆市","肇庆市自然资源局","http://www.zhaoqing.gov.cn/zqzyj/","地级市"],
+        ["肇庆市","端州区","肇庆市自然资源局端州分局","https://www.zhaoqing.gov.cn/zqzyj/gkmlpt/index","市辖区"],
+        ["肇庆市","鼎湖区","肇庆市自然资源局鼎湖分局","https://www.zhaoqing.gov.cn/zqzyj/gkmlpt/index","市辖区"],
+        ["肇庆市","高要区","肇庆市自然资源局高要分局","https://www.gaoyao.gov.cn/zqgyzyj/gkmlpt/index","市辖区"],
+        ["肇庆市","广宁县","广宁县自然资源局","https://www.gdgn.gov.cn/zqgnzrj/gkmlpt/index","县"],
+        ["肇庆市","怀集县","怀集县自然资源局","https://www.huaiji.gov.cn/xxgk/xzrzyj/","县"],
+        ["肇庆市","封开县","封开县自然资源局","https://www.fengkai.gov.cn/gzjg/xzrzyj/index.html","县"],
+        ["肇庆市","德庆县","德庆县自然资源局","https://www.gddq.gov.cn/zqdqzyj/gkmlpt/index","县"],
+        ["肇庆市","四会市","四会市自然资源局","https://www.sihui.gov.cn/zqshzyj/gkmlpt/index","县级市"],
+        ["江门市","江门市","江门市自然资源局","https://www.jiangmen.gov.cn/bmpd/jmszrzyj/","地级市"],
+        ["江门市","蓬江区","江门市自然资源局蓬江分局","https://www.jiangmen.gov.cn/bmpd/jmszrzyj/","市辖区"],
+        ["江门市","江海区","江门市自然资源局江海分局","https://www.jiangmen.gov.cn/bmpd/jmszrzyj/","市辖区"],
+        ["江门市","新会区","江门市自然资源局新会分局","http://www.xinhui.gov.cn/jmxhqzrj/gkmlpt/index","市辖区"],
+        ["江门市","台山市","台山市自然资源局","http://www.cnts.gov.cn/zfgzbm/szrzyj/index.html","县级市"],
+        ["江门市","开平市","开平市自然资源局","http://www.kaiping.gov.cn/kpszrzyj/index.html","县级市"],
+        ["江门市","鹤山市","鹤山市自然资源局","http://www.heshan.gov.cn/gzjg/sfbm/hsszrzyj/index.html","县级市"],
+        ["江门市","恩平市","恩平市自然资源局","http://www.enping.gov.cn/gzjg/epszrzyj/ghgs/index.html","县级市"],
+        ["茂名市","茂名市","茂名市自然资源局","http://zrzyj.maoming.gov.cn/","地级市"],
+        ["茂名市","茂南区","茂名市自然资源局茂南分局","http://www.maonan.gov.cn/mmmnzrzyj/gkmlpt/index","市辖区"],
+        ["茂名市","电白区","茂名市自然资源局电白分局","http://www.dianbai.gov.cn/mmdbzrzyj/gkmlpt/index","市辖区"],
+        ["茂名市","高州市","高州市自然资源局","http://www.gaozhou.gov.cn/mmgzzrzyj/gkmlpt/index","县级市"],
+        ["茂名市","化州市","化州市自然资源局","http://www.huazhou.gov.cn/mmhzzrzyj/gkmlpt/index","县级市"],
+        ["茂名市","信宜市","信宜市自然资源局","http://www.xinyi.gov.cn/mmxyzrzyj/gkmlpt/index","县级市"],
+        ["惠州市","惠州市","惠州市自然资源局","http://land.huizhou.gov.cn/","地级市"],
+        ["惠州市","惠城区","惠州市自然资源局惠城分局","http://www.hcq.gov.cn/bmzj/qzrzyj/","市辖区"],
+        ["惠州市","惠阳区","惠州市自然资源局惠阳分局","https://www.huiyang.gov.cn/hzhyzrzyj/gkmlpt/index","市辖区"],
+        ["惠州市","博罗县","博罗县自然资源局","https://www.boluo.gov.cn/xzrzyj/","县"],
+        ["惠州市","惠东县","惠东县自然资源局","https://www.huidong.gov.cn/hzhdzrzyj/gkmlpt/index","县"],
+        ["惠州市","龙门县","龙门县自然资源局","https://www.longmen.gov.cn/hzlmzrzyj/gkmlpt/index","县"],
+        ["梅州市","梅州市","梅州市自然资源局","https://www.meizhou.gov.cn/zwgk/zfjg/szrzyj/mindex.html","地级市"],
+        ["梅州市","梅江区","梅州市自然资源局梅江分局","http://www.meijiang.gov.cn/","市辖区"],
+        ["梅州市","梅县区","梅州市自然资源局梅县分局","http://www.gdmx.gov.cn/zfxxgkml/mzszrzyjmxfj/","市辖区"],
+        ["梅州市","大埔县","大埔县自然资源局","https://www.dabu.gov.cn/mzdpzrj/gkmlpt/index","县"],
+        ["梅州市","丰顺县","丰顺县自然资源局","https://www.fengshun.gov.cn/zfjg/gzbm/zrzyj/","县"],
+        ["梅州市","五华县","五华县自然资源局","https://www.wuhua.gov.cn/xxgk/zfjg/xzrzyj/","县"],
+        ["梅州市","平远县","平远县自然资源局","http://www.pingyuan.gov.cn/mzpyzrj/gkmlpt/index","县"],
+        ["梅州市","蕉岭县","蕉岭县自然资源局","https://www.jiaoling.gov.cn/mzqlzrj/gkmlpt/index","县"],
+        ["梅州市","兴宁市","兴宁市自然资源局","http://www.xingning.gov.cn/zfjg/xnszrzyj/","县级市"],
+        ["汕尾市","汕尾市","汕尾市自然资源局","https://www.shanwei.gov.cn/swgtj/","地级市"],
+        ["汕尾市","城区","汕尾市自然资源局城区分局","http://www.swchengqu.gov.cn/cqhyyyj/","市辖区"],
+        ["汕尾市","海丰县","海丰县自然资源局","http://www.gdhf.gov.cn/swhfzrj/gkmlpt/index","县"],
+        ["汕尾市","陆河县","陆河县自然资源局","http://www.luhe.gov.cn/swlhzrj/gkmlpt/index","县"],
+        ["汕尾市","陆丰市","陆丰市自然资源局","http://www.lufengshi.gov.cn/gtzy/","县级市"],
+        ["河源市","河源市","河源市自然资源局","http://www.heyuan.gov.cn/bmjy/hyszrzyj/zrzy/index.html","地级市"],
+        ["河源市","源城区","河源市自然资源局源城分局","http://www.gdyc.gov.cn/zwgk/zdlyxxgk/zdxx/","市辖区"],
+        ["河源市","紫金县","紫金县自然资源局","http://www.zijin.gov.cn/zrzyj/","县"],
+        ["河源市","龙川县","龙川县自然资源局","http://www.longchuan.gov.cn/hylczrzyj/gkmlpt/index","县"],
+        ["河源市","连平县","连平县自然资源局","http://www.lianping.gov.cn/hylpzrzyj/gkmlpt/index","县"],
+        ["河源市","和平县","和平县自然资源局","http://www.heping.gov.cn/hyhpzrzyj/gkmlpt/index","县"],
+        ["河源市","东源县","东源县自然资源局","http://www.gddongyuan.gov.cn/hydyzrzyj/gkmlpt/index","县"],
+        ["阳江市","阳江市","阳江市自然资源局","http://www.yangjiang.gov.cn/yjzrzy/gkmlpt/mindex","地级市"],
+        ["阳江市","江城区","阳江市自然资源局江城分局","http://www.jiangcheng.gov.cn/yjjczrzyj/gkmlpt/index","市辖区"],
+        ["阳江市","阳东区","阳江市自然资源局阳东分局","http://www.yangdong.gov.cn/yjydzrzy/gkmlpt/index","市辖区"],
+        ["阳江市","阳西县","阳西县自然资源局","http://www.yangxi.gov.cn/yjyxgtzyj/gkmlpt/index","县"],
+        ["阳江市","阳春市","阳春市自然资源局","https://www.yangchun.gov.cn/yjyczrzy/gkmlpt/index","县级市"],
+        ["清远市","清远市","清远市自然资源局","http://www.gdqy.gov.cn/channel/qyszrzyj/index.html","地级市"],
+        ["清远市","清城区","清远市自然资源局清城分局","http://www.gdqy.gov.cn/channel/qyszrzyj/index.html","市辖区"],
+        ["清远市","清新区","清远市自然资源局清新分局","https://www.qingxin.gov.cn/bmxz/bm/qysgtzyjqxfj/","市辖区"],
+        ["清远市","佛冈县","佛冈县自然资源局","http://www.fogang.gov.cn/qyfgzrzy/gkmlpt/index","县"],
+        ["清远市","阳山县","阳山县自然资源局","http://www.yangshan.gov.cn/qyyszrzy/gkmlpt/index","县"],
+        ["清远市","连山壮族瑶族自治县","连山壮族瑶族自治县自然资源局","http://www.gdls.gov.cn/qylszrzy/gkmlpt/index","自治县"],
+        ["清远市","连南瑶族自治县","连南瑶族自治县自然资源局","http://www.liannan.gov.cn/qylnzrzyj/gkmlpt/index","自治县"],
+        ["清远市","英德市","英德市自然资源局","http://www.yingde.gov.cn/yqydzrzy/gkmlpt/index","县级市"],
+        ["清远市","连州市","连州市自然资源局","http://www.lianzhou.gov.cn/qylzzrzy/gkmlpt/index","县级市"],
+        ["东莞市","东莞市","东莞市自然资源局","http://nr.dg.gov.cn/","地级市"],
+        ["中山市","中山市","中山市自然资源局","https://www.zs.gov.cn/zrzyj/","地级市"],
+        ["潮州市","潮州市","潮州市自然资源局","https://www.chaozhou.gov.cn/zwgk/szfgz/zrzy/index.html","地级市"],
+        ["潮州市","湘桥区","潮州市自然资源局湘桥分局","http://www.xiangqiao.gov.cn/czxqzrzyj/gkmlpt/index","市辖区"],
+        ["潮州市","潮安区","潮州市自然资源局潮安分局","https://www.chaoan.gov.cn/czcazyj/gkmlpt/index","市辖区"],
+        ["潮州市","饶平县","饶平县自然资源局","https://www.raoping.gov.cn/czrpzyj/gkmlpt/index","县"],
+        ["揭阳市","揭阳市","揭阳市自然资源局","http://www.jieyang.gov.cn/jyzrzy/","地级市"],
+        ["揭阳市","榕城区","揭阳市自然资源局榕城分局","http://www.jyrongcheng.gov.cn/jyrczrj/gkmlpt/index","市辖区"],
+        ["揭阳市","揭东区","揭阳市自然资源局揭东分局","http://www.jiedong.gov.cn/jyjdzrj/gkmlpt/index","市辖区"],
+        ["揭阳市","揭西县","揭西县自然资源局","http://www.jiexi.gov.cn/jyjxzrj/gkmlpt/index","县"],
+        ["揭阳市","惠来县","惠来县自然资源局","http://www.huilai.gov.cn/bmzz/hlxzrzyj/","县"],
+        ["揭阳市","普宁市","普宁市自然资源局","http://www.puning.gov.cn/pngtj/","县级市"],
+        ["云浮市","云浮市","云浮市自然资源局","https://www.yunfu.gov.cn/zrzy/","地级市"],
+        ["云浮市","云城区","云浮市自然资源局云城分局","http://www.yfyunchengqu.gov.cn/yfyczrzyj/gkmlpt/index","市辖区"],
+        ["云浮市","云安区","云浮市自然资源局云安分局","https://www.yunan.gov.cn/yfyazrzy/gkmlpt/index","市辖区"],
+        ["云浮市","新兴县","新兴县自然资源局","https://www.xinxing.gov.cn/yfxxzrzy/gkmlpt/index","县"],
+        ["云浮市","郁南县","郁南县自然资源局","http://www.gdyunan.gov.cn/yfynzrzy/gkmlpt/index","县"],
+        ["云浮市","罗定市","罗定市自然资源局","http://www.luoding.gov.cn/yfldzrzy/gkmlpt/index","县级市"]
+    ];
+
+    const arrowSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+    const copySvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+    const checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+    let currentFilter = 'all';
+    let currentSearch = '';
+    const searchHistory = { current: '' };
+
+    // 工具函数：统一化搜索关键词（全角空格->半角，去首尾空白）
+    function normalizeQuery(q) {
+        return q.replace(/[\u3000]/g, ' ').trim().toLowerCase();
+    }
+
+    // 字符串转义
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    // 高亮
+    function highlight(text, query) {
+        if (!query) return escapeHtml(text);
+        const safeText = escapeHtml(text);
+        const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const re = new RegExp(safeQuery, 'gi');
+        return safeText.replace(re, (m) => `<mark>${m}</mark>`);
+    }
+
+    // 按城市分组
+    function groupByCity(items) {
+        const groups = {};
+        items.forEach(item => {
+            if (!groups[item[0]]) groups[item[0]] = [];
+            groups[item[0]].push(item);
+        });
+        return groups;
+    }
+
+    // 渲染左侧导航
+    function renderCityNav() {
+        const groups = groupByCity(data);
+        const navList = document.getElementById('cityNavList');
+        navList.innerHTML = cityOrder.filter(c => groups[c]).map(city =>
+            `<li><a class="city-nav-item" href="#city-${city}" data-city="${city}">
+                <span>${city.replace('市', '')}</span>
+                <span class="num">${groups[city].length}</span>
+            </a></li>`
+        ).join('');
+
+        navList.querySelectorAll('.city-nav-item').forEach(link => {
+            link.addEventListener('click', (e) => {
+                navList.querySelectorAll('.city-nav-item').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+    }
+
+    // 主渲染
+    function render() {
+        const query = normalizeQuery(currentSearch);
+        let filtered = data.filter(item => {
+            const matchFilter = currentFilter === 'all' || item[4] === currentFilter;
+            const matchSearch = query === '' ||
+                item[0].toLowerCase().includes(query) ||
+                item[1].toLowerCase().includes(query) ||
+                item[2].toLowerCase().includes(query) ||
+                item[3].toLowerCase().includes(query);
+            return matchFilter && matchSearch;
+        });
+
+        const groups = groupByCity(filtered);
+        const content = document.getElementById('content');
+        const noResults = document.getElementById('noResults');
+
+        if (Object.keys(groups).length === 0) {
+            content.innerHTML = '';
+            noResults.classList.add('visible');
+            updateStats(0, 0, 0, 0, 0);
+            return;
+        }
+        noResults.classList.remove('visible');
+
+        let html = '';
+        cityOrder.forEach(city => {
+            if (!groups[city]) return;
+            const items = groups[city];
+            html += `<section class="city-section" id="city-${city}">`;
+            html += `<div class="city-header">
+                        <span class="city-name">${city}</span>
+                        <span class="city-count">${items.length} 个</span>
+                     </div>`;
+            html += `<div class="card-grid">`;
+            items.forEach(item => {
+                const [cityName, county, name, url, level] = item;
+                html += `<a class="card" href="${url}" target="_blank" rel="noopener" data-level="${level}">
+                    <div class="card-top">
+                        <span class="card-county">${highlight(county, query)}</span>
+                        <span class="card-tag tag-${level}">${level}</span>
+                    </div>
+                    <div class="card-name">${highlight(name, query)}</div>
+                    <div class="card-footer">
+                        <div class="card-link">访问官网 ${arrowSvg}</div>
+                        <button class="card-copy" type="button" data-url="${url}" title="复制链接">
+                            ${copySvg}<span>复制</span>
+                        </button>
+                    </div>
+                </a>`;
+            });
+            html += `</div></section>`;
+        });
+
+        content.innerHTML = html;
+
+        // 统计
+        const stats = { city: 0, county: 0, district: 0, aut: 0, total: filtered.length };
+        filtered.forEach(item => {
+            const lvl = item[4];
+            if (lvl === '地级市') stats.city++;
+            else if (lvl === '县级市') stats.county++;
+            else if (lvl === '市辖区') stats.district++;
+            else if (lvl === '县' || lvl === '自治县') stats.aut++;
+        });
+        updateStats(stats.city, stats.county, stats.district, stats.aut, stats.total);
+
+        // 绑定复制按钮
+        content.querySelectorAll('.card-copy').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const url = btn.dataset.url;
+                try {
+                    await navigator.clipboard.writeText(url);
+                } catch (err) {
+                    const ta = document.createElement('textarea');
+                    ta.value = url;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try { document.execCommand('copy'); } catch (e2) {}
+                    document.body.removeChild(ta);
+                }
+                btn.classList.add('copied');
+                btn.innerHTML = `${checkSvg}<span>已复制</span>`;
+                showToast('链接已复制到剪贴板');
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = `${copySvg}<span>复制</span>`;
+                }, 1800);
+            });
+        });
+    }
+
+    function updateStats(city, county, district, aut, total) {
+        const set = (id, v) => { document.getElementById(id).textContent = v; };
+        set('stat-city', city);
+        set('stat-county', county);
+        set('stat-district', district);
+        set('stat-aut', aut);
+        set('stat-total', total);
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+    }
+
+    // === 事件绑定 ===
+
+    // 过滤按钮
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.filter;
+            render();
+        });
+    });
+
+    // 搜索框
+    const searchInput = document.getElementById('searchInput');
+    const searchWrap = document.getElementById('searchWrap');
+    const searchClear = document.getElementById('searchClear');
+
+    searchInput.addEventListener('input', (e) => {
+        currentSearch = e.target.value;
+        searchWrap.classList.toggle('has-value', currentSearch.trim() !== '');
+        render();
+    });
+
+    searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        currentSearch = '';
+        searchWrap.classList.remove('has-value');
+        render();
+        searchInput.focus();
+    });
+
+    // 返回顶部
+    const backTop = document.getElementById('backTop');
+    window.addEventListener('scroll', () => {
+        backTop.classList.toggle('visible', window.scrollY > 400);
+    });
+    backTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 深色模式
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const moonSvg = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    const sunSvg = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.innerHTML = moonSvg;
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            themeIcon.innerHTML = sunSvg;
+        }
+        try { localStorage.setItem('gd-zrzy-theme', theme); } catch (e) {}
+    }
+
+    (function initTheme() {
+        let saved = null;
+        try { saved = localStorage.getItem('gd-zrzy-theme'); } catch (e) {}
+        if (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            saved = 'dark';
+        }
+        applyTheme(saved || 'light');
+    })();
+
+    themeToggle.addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme');
+        applyTheme(cur === 'dark' ? 'light' : 'dark');
+    });
+
+    // 快捷键
+    document.addEventListener('keydown', (e) => {
+        const target = e.target;
+        const isEditable = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
+
+        if (e.key === '/' && !isEditable) {
+            e.preventDefault();
+            searchInput.focus();
+        } else if (e.key === 'Escape' && !isEditable) {
+            if (searchInput.value !== '' || document.activeElement === searchInput) {
+                searchInput.value = '';
+                currentSearch = '';
+                searchWrap.classList.remove('has-value');
+                render();
+                searchInput.blur();
+            }
+        } else if ((e.key === 't' || e.key === 'T') && !isEditable) {
+            themeToggle.click();
+        }
+    });
+
+    // 初次渲染
+    renderCityNav();
+    render();
+    </script>
+</body>
+</html>
